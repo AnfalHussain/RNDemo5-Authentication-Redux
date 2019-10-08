@@ -1,13 +1,25 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 //Redux
-import store from "./redux/reducers";
+import store from "./redux/";
 import { Provider } from "react-redux";
 
 //Components
-import LoginForm from "./components/LoginForm";
+// import LoginForm from "./components/LoginForm";
+import AppContainer from "./Navigation";
 
-export default function App() {
-  return <LoginForm />;
+class App extends Component {
+
+
+  render() {
+
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    );
+  }
 }
+
+export default App;

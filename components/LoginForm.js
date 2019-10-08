@@ -11,6 +11,7 @@ import {
 } from "native-base";
 
 import { connect } from "react-redux";
+import * as actionCreators from "../redux/actions/authActions";
 
 // Actions
 // import { login } from "./redux/actions";
@@ -25,7 +26,9 @@ class LoginForm extends Component {
   };
 
   handleSubmit = () => {
-    alert("Check my code the states are empty");
+    // alert("Check my code the states are empty");
+    this.props.login(this.state)
+
   };
 
   render() {
@@ -37,7 +40,12 @@ class LoginForm extends Component {
         <Content>
           <Form>
             <Item>
-              <Input name="username" value={username} placeholder="Username" />
+              <Input
+                name="username"
+                value={username}
+                placeholder="Username"
+                onChangeText={username => this.handleChange({ username: username })} />
+
             </Item>
             <Item last>
               <Input
@@ -45,7 +53,9 @@ class LoginForm extends Component {
                 placeholder="Password"
                 secureTextEntry
                 name="password"
-              />
+                onChangeText={password => this.handleChange({ password: password })} />
+
+
             </Item>
             <Button onPress={this.handleSubmit}>
               <Text>Login</Text>
@@ -56,4 +66,22 @@ class LoginForm extends Component {
     );
   }
 }
-export default LoginForm;
+// export default LoginForm;
+
+const mapStateToProps = state =>
+  ({
+    user: state.rootAuth.user
+  });
+const mapDispatchToProps = dispatch => ({
+  login: (userData, navigation) =>
+    dispatch(actionCreators.loginUser(userData, navigation)),
+  signup: (userData, navigation) =>
+    dispatch(actionCreators.registerUser(userData, navigation)),
+  checkForToken: navigation =>
+    dispatch(actionCreators.checkForExpiredToken(navigation))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginForm);
